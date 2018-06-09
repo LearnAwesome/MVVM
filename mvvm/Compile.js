@@ -47,8 +47,7 @@ class Compile {
   }
   nodeToFragment(el) {
     const fragment = document.createDocumentFragment();
-    const { childNodes } = el;
-    console.log(childNodes); // childNodes: NodeList(ArrayLike)
+    const { childNodes } = el; // childNodes: NodeList(ArrayLike)
     for (const node of Array.from(childNodes)) {
       fragment.appendChild(node);
     }
