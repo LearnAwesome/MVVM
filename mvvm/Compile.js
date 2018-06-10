@@ -21,7 +21,23 @@ class Compile {
         const { value: expr } = attr; // expr => "message.text.a"...
         const [, directive] = name.split('-'); // directive => "model"..
         const compileFn = CompileUtils.methods[directive];
+
+        // 创建观察者
+        // 当数据改变时，重新编译相应节点
+        new Watcher(this.vm, expr, () => {
+          compileFn && compileFn(node, this.vm.$data, expr);
+        });
+
+        // 第一次编译时，替换表达式为具体的值
         compileFn && compileFn(node, this.vm.$data, expr);
+
+        // input输入时，更新数据
+        if (node.tagName.toLowerCase() === 'input') {
+          node.addEventListener('input', e => {
+            const value = e.target.value;
+            CompileUtils.resolver.express(this.vm.$data, expr, value);
+          });
+        }
       }
     }
   }
@@ -29,7 +45,23 @@ class Compile {
     const { textContent } = node; // textContent => "{{message.text.a}} 123 {{other}}"...
     const reg = CompileUtils.reg.mustache;
     if (reg.test(textContent)) {
+      // test方法前的正则如果含有全局配属性，lastIndex会记忆，清除保证其他地方test方法正常运行
+      reg.lastIndex = 0;
       const compileFn = CompileUtils.methods.text;
+
+      // 创建观察者
+      // 当数据改变时，重新编译相应节点
+      // 文本节点有可能是 {{message.a}} asd {{other}} 
+      textContent.replace(CompileUtils.reg.mustache, (...args) => {
+        const expr = args[1];
+        // 每个 mustache 创建一个 watcher
+        new Watcher(this.vm, expr, () => {
+          // 每当任意一个 mustache 改变时，更新全部文本节点的内容 textContent
+          compileFn && compileFn(node, this.vm.$data, textContent);
+        });
+      });
+
+      // 第一次编译时，替换表达式为具体的值
       compileFn && compileFn(node, this.vm.$data, textContent);
     }
   }
@@ -53,6 +85,7 @@ class Compile {
     }
     return fragment;
   }
+
   // common
   isDirective(name) { // name => 'v-model'...
     return name.startsWith('v-');
@@ -91,16 +124,19 @@ CompileUtils = {
         return this.mustache(data, mustache);
       });
     },
-    // {{}}
     mustache(data, expr) { // expr => "{{a}}"
       expr = expr.replace(CompileUtils.reg.mustache, (...args) => args[1]);
       return this.express(data, expr);
     },
-    // message.a.b.c
-    express(data, expr) { // expr => "message.a.b.c"...
+    express(data, expr, value) { // expr => "message.a.b.c"...
       expr = expr.split('.');
-      return expr.reduce((prev, next) => {
-        return prev[next];
+      // 收敛
+      return expr.reduce((prev, next, currentIndex) => {
+        if (value && currentIndex === expr.length - 1) {
+          return prev[next] = value;
+        } else {
+          return prev[next];
+        }
       }, data);
     }
   },

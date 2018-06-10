@@ -8,23 +8,22 @@
 </head>
 <body>
   <div id="app">
-    <input type="text" v-model="message.text.a">
-    <div>{{message.text.a}}</div>
+    <input type="text" v-model="message.a">
+    <div>{{message.a}}</div>
     <ul><li></li></ul>
-    {{message.text.a}} 123 {{other}}
+    {{message.a}} 123 {{other}}
   </div>
-  <!-- <script src="./mvvm/Observer.js"></script> -->
-  <script src="./mvvm/Observer.js"></script>
+  <script src="./mvvm/Dependence.js"></script>
   <script src="./mvvm/Compile.js"></script>
+  <script src="./mvvm/Watcher.js"></script>
+  <script src="./mvvm/Observer.js"></script>
   <script src="./mvvm/MVVM.js"></script>
   <script>
     const vm = new MVVM({
       el: '#app',
       data: {
         message: {
-          text: {
-            a: 'Hello, my MVVM framework'
-          }
+          a: 'Hello, my MVVM framework'
         },
         other: 'abc'
       }
