@@ -10,7 +10,9 @@
   <div id="app">
     <input type="text" v-model="message.a">
     <div>{{message.a}}</div>
-    <ul><li></li></ul>
+    <ul>
+      <li>{{other}}</li>
+    </ul>
     {{message.a}} 123 {{other}}
   </div>
   <script src="./mvvm/Dependence.js"></script>
@@ -23,7 +25,7 @@
       el: '#app',
       data: {
         message: {
-          a: 'Hello, my MVVM framework'
+          a: 'Hello, ' + Date.now()
         },
         other: 'abc'
       }
