@@ -1,0 +1,52 @@
+{
+  "string": "★★★★",
+  "number": 63,
+  "boolean": false,
+  "regexp": "nO7",
+  "function": 0.9418605341243282,
+  "array": [
+    {
+      "foo": 1,
+      "bar": "★★★★★★★★"
+    },
+    {
+      "foo": 2,
+      "bar": "★★★★★★★★★"
+    },
+    {
+      "foo": 3,
+      "bar": "★★★★"
+    },
+    {
+      "foo": 4,
+      "bar": "★★★★★★★★"
+    },
+    {
+      "foo": 5,
+      "bar": "★★★★★★★★★"
+    },
+    {
+      "foo": 6,
+      "bar": "★★"
+    },
+    {
+      "foo": 7,
+      "bar": "★★★★★★★"
+    },
+    {
+      "foo": 8,
+      "bar": "★★"
+    }
+  ],
+  "items": [
+    1,
+    true,
+    "hello",
+    "oDv31qt80l"
+  ],
+  "object": {
+    "foo": 1,
+    "bar": "★★★★★★"
+  },
+  "placeholder": "Ugnqjgcf Uhf Pwdtwdeu"
+}
